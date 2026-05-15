@@ -76,7 +76,7 @@ pip install pandas matplotlib seaborn
 ### Execution Steps
 1. Clone this specific repository to your local computer path:
    ```bash
-   git clone https://github.com
+   git clone https://github.com/LeroyChris/hospital-no-show-data-wrangling
    cd hospital-no-show-data-wrangling
    ```
 2. Open your preferred IDE (VS Code or Jupyter Notebooks) and boot up the main pipeline file:
