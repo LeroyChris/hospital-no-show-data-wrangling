@@ -1,86 +1,77 @@
-# Comprehensive Data Wrangling Pipeline: Hospital Appointment No-Show Analytics
+﻿# Hospital Appointment No-Show Data Wrangling
 
-A production-grade, end-to-end data wrangling and exploratory analytics pipeline executed on a healthcare administration dataset. This repository demonstrates granular data hygiene operations, data type sanitization, feature alignment, and modular script engineering tailored to isolate behavioral anomalies behind medical appointment cancellations.
+This repository contains a single notebook, `Pipeline.ipynb`, that implements a complete data wrangling workflow for the Medical Appointment No-Shows dataset.
 
-## 📊 Dataset Specifications & Domain Context
-
-- **Dataset Source:** Medical Appointment No-Shows (Kaggle).
-- **Core Objective:** Clean and preprocess unstructured administrative patient logs to uncover why **20% of patients skip their scheduled appointments**, directly impacting operational efficiency and healthcare hospital revenue.
-- **Data Scale:** Encompasses **110,527 unique appointment records** mapped across **14 baseline features** including demographics, scheduling lead times, specific medical comorbidities, and final attendance target labels.
+It is designed to guide you through the full analysis sequence from raw CSV ingestion to business-focused insights and visualization.
 
 ---
 
-## 🛠️ Data Wrangling Lifecycle & Engineering Pipeline
+## What `Pipeline.ipynb` covers
 
-The programmatic workflow is structured sequentially to transition raw, unhygienic administrative data into analytical assets:
+The notebook is organized into clearly separated sections:
 
-[Raw CSV Ingestion] ──> Data Characterization & Integrity Scanning
-│
-▼
-[Data Cleansing Phase] ──> Handles negative age variables & logical outliers
-│
-▼
-[Type Sanitization] ──> Casts timestamps to Datetime objects & normalizes IDs
-│
-▼
-[Feature Engineering] ──> Calculates scheduling lead-time deltas & daily mappings
-│
-▼
-[Exploratory Analytics]──> Modular descriptive plots using Matplotlib & Seaborn
+1. **Setup & Imports**
+   - Load essential libraries and prepare the notebook environment.
 
+2. **Data Understanding**
+   - Load the dataset from `data/noshowappointments.csv`.
+   - Verify dataset dimensions, column types, and initial data quality.
+   - Identify typos and unusual values in raw columns.
 
----
+3. **General Cleaning Pipeline**
+   - Standardize column names to lowercase and underscore format.
+   - Remove fully duplicated rows.
+   - Parse string date columns into datetime objects.
 
-## 🧩 Advanced Programming & Pipeline Implementation
+4. **Dataset-Specific Cleaning**
+   - Correct known typos in column names (`hipertension` → `hypertension`, `handcap` → `handicap`).
+   - Remove invalid age values.
+   - Convert the `No-show` label into a binary `is_no_show` feature.
 
-### 1. Robust Data Hygiene & Integrity Fixes
-- **Anomaly Interception:** Isolated and purged logical errors in data rows (such as negative age inputs) that distort statistical distribution models.
-- **Value Constraints:** Rectified structural inconsistencies and verified binary flags across health conditions (Scholarship, Hipertension, Diabetes, Alcoholism, Handcap, SMS_received).
+5. **Data Manipulation & Feature Engineering**
+   - Create `wait_days` representing days between scheduling and appointment.
+   - Derive `appointment_day_of_week` to analyze weekday patterns.
+   - Group patients by age brackets for demographic analysis.
 
-### 2. High-Fidelity Type Conversions
-- Formatted `PatientId` and `AppointmentID` tracking variables to remove technical numerical float mutations.
-- Transformed unstructured object strings (`ScheduledDay`, `AppointmentDay`) into strict ISO standard Datetime vectors to support chronological timeline calculations.
-
-### 3. Modular Feature Construction (`def` Ecosystem)
-- Avoided long linear scripts by wrapping custom cleaning states into reusable, testable Python functions (`def`).
-- Synthesized critical delta features, computing the precise waiting window between the registration date and the actual appointment date to serve as a primary behavioral indicator.
-
-### 4. Descriptive Visual Insights (Matplotlib & Seaborn)
-- Conducted univariate and multivariate analysis to identify correlation factors between demographic groups, communication touchpoints (SMS reminders), and cancellation metrics.
-- Extracted explicit quantitative indicators to assist management in designing better hospital booking frameworks.
+6. **Business Use Cases & Insight**
+   - Evaluate how wait time, SMS reminders, and age group relate to no-show behavior.
+   - Produce visual summaries and practical recommendations.
 
 ---
 
-## 📁 Repository Structure
+## Repository structure
 
 ```text
 hospital-no-show-data-wrangling/
 ├── data/
-│   └── noshowappointments.csv   <- Core raw healthcare CSV dataset
-├── Pipeline.ipynb              <- Fully documented Jupyter Notebook (English Version)
-└── README.md                   <- Comprehensive pipeline architecture & data breakdown
+│   └── noshowappointments.csv   <- Raw dataset used by the notebook
+├── Pipeline.ipynb              <- Main Jupyter Notebook with analysis workflow
+└── README.md                   <- This guide
 ```
 
 ---
 
-## ⚙️ Quick Start & Reproducibility Guide
-
-To execute this pipeline locally and reproduce the data transformation steps, follow the guide below:
+## Run the notebook
 
 ### Prerequisites
-Ensure you have Python 3.8+ installed along with the required analytical libraries:
+Install Python packages required by the notebook:
+
 ```bash
 pip install pandas matplotlib seaborn
 ```
 
-### Execution Steps
-1. Clone this specific repository to your local computer path:
-   ```bash
-   git clone https://github.com
-   cd hospital-no-show-data-wrangling
-   ```
-2. Open your preferred IDE (VS Code or Jupyter Notebooks) and boot up the main pipeline file:
-   ```bash
-   jupyter notebook Pipeline.ipynb
-   ```
-3. Run all cells sequentially (`Run All`) to trace the transformation metrics from data loading up to data visualization outputs.
+### Start the analysis
+
+1. Open the repository in VS Code or Jupyter Notebook.
+2. Open `Pipeline.ipynb`.
+3. Run the notebook cells in order, section by section.
+
+> Recommended: use the notebook's `Run All` feature after confirming the setup cell imports successfully.
+
+---
+
+## Notes for readers
+
+- The notebook uses explicit Python functions to keep cleaning steps reusable and easy to follow.
+- If you want to adapt the pipeline for a different dataset, start by updating the path in the first data loading cell.
+- The final section is focused on business insight, so it is useful for presenting results to stakeholders.
